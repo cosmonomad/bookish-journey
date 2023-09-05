@@ -7,8 +7,8 @@ from random import uniform
 NSRC = 1_000_000
 
 # from wikipedia
-RA = '00:42:44.3'
-DEC = '41:16:09'
+RA = '00:42:44.5'
+DEC = '41:16:14'
 
 def make_positions():
     # convert to decimal degrees
