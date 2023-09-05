@@ -10,6 +10,34 @@ NSRC = 1_000_000
 RA = '00:42:44.5'
 DEC = '41:16:14'
 
+
+def crop_to_circle(ras, decs, ref_ra, ref_dec, radius):
+    """
+    Crop an input list of positions so that they lie within radius of
+    a reference position
+
+    Parameters
+    ----------
+    ras,decs : list(float)
+        The ra and dec in degrees of the data points
+    ref_ra, ref_dec: float
+        The reference location
+    radius: float
+        The radius in degrees
+    Returns
+    -------
+    ras, decs : list
+        A list of ra and dec coordinates that pass our filter.
+    """
+    ra_out = []
+    dec_out = []
+    for i in range(len(ras)):
+        if (ras[i]-ref_ra)**2 + (decs[i]-ref_dec)**2 < radius**2:
+            ra_out.append(ras[i])
+            dec_out.append(ras[i])
+    return ra_out, dec_out
+
+
 def make_positions():
     # convert to decimal degrees
     d, m, s = DEC.split(':')
@@ -25,6 +53,9 @@ def make_positions():
     for i in range(NSRC):
         ras.append(ra + uniform(-1,1))
         decs.append(dec + uniform(-1,1))
+    
+    # apply our filter
+    ras, decs = crop_to_circle(ras, decs)
     return ras, decs
 
 def save_positions(ras, decs):
