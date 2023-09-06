@@ -38,7 +38,7 @@ def crop_to_circle(ras, decs, ref_ra, ref_dec, radius):
     return ra_out, dec_out
 
 
-def make_positions():
+def get_radec():
     # convert to decimal degrees
     d, m, s = DEC.split(':')
     dec = int(d)+int(m)/60+float(s)/3600
@@ -46,7 +46,9 @@ def make_positions():
     h, m, s = RA.split(':')
     ra = 15*(int(h)+int(m)/60+float(s)/3600)
     ra = ra/cos(dec*pi/180)
+    return ra, dec
 
+def make_positions(ra, dec, NSRC):
     # make 1000 stars within 1 degree of Andromeda
     ras = []
     decs = []
@@ -69,7 +71,8 @@ def clip_to_radius():
     return
 
 def main():
-    ras, decs = make_positions()
+    ra, dec = get_radec()
+    ras, decs = make_positions(ra, dec, NSRC)
     save_positions(ras, decs)
 
 if __name__ == '__main__':
